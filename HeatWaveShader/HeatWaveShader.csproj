@@ -43,15 +43,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Components\AnimationManager.cs" />
-    <Compile Include="Components\BulletMover.cs" />
-    <Compile Include="Components\PlayerController.cs" />
-    <Compile Include="Components\Weapon.cs" />
-    <Compile Include="Constants\PhysicsLayers.cs" />
     <Compile Include="Effects\PixelHeatDistortionPointPostProcessor.cs" />
     <Compile Include="Entities\Explosive.cs" />
-    <Compile Include="Entities\Player.cs" />
-    <Compile Include="Input\InputHandler.cs" />
-    <Compile Include="Input\InputMapping.cs" />
     <Compile Include="NezGame.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
