@@ -53,7 +53,13 @@
 /build:img/tiles.png
 
 #begin tiled/test.tmx
-/importer:
-/processor:
+/importer:TiledMapImporter
+/processor:TiledMapProcessor
 /build:tiled/test.tmx
+
+#begin Effects/PixelHeatDistortionPoint.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Effects/PixelHeatDistortionPoint.fx
 

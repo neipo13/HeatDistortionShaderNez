@@ -1,4 +1,5 @@
-﻿using Nez;
+﻿
+using Nez;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +11,16 @@ using Nez.Textures;
 
 namespace HeatWaveShader.Components
 {
-    public enum PlayerAnimations
+    public enum Anims
     {
-        Idle,
-        Run
+        Explosion
     }
 
     public class AnimationManager : Component
     {
-        public Sprite<PlayerAnimations> sprite;
+        public Sprite<Anims> sprite;
         List<Subtexture> subtextures;
-        public AnimationManager(Sprite<PlayerAnimations> sprite, List<Subtexture> subtextures)
+        public AnimationManager(Sprite<Anims> sprite, List<Subtexture> subtextures)
         {
             this.sprite = sprite;
             this.subtextures = subtextures;
@@ -30,13 +30,9 @@ namespace HeatWaveShader.Components
         public override void onAddedToEntity()
         {
             base.onAddedToEntity();
+            sprite.addAnimation(Anims.Explosion, new SpriteAnimation(subtextures.GetRange(97, 2)));
 
-            var runSpriteAnim = new SpriteAnimation(subtextures.GetRange(36, 5));
-            runSpriteAnim.fps = 16;
-            var runAnim = sprite.addAnimation(PlayerAnimations.Run, runSpriteAnim);
-            var idleAnim = sprite.addAnimation(PlayerAnimations.Idle, new SpriteAnimation(subtextures.GetRange(32, 4)));
-
-            sprite.play(PlayerAnimations.Idle);
+            sprite.play(Anims.Explosion);
         }
 
         public override void onRemovedFromEntity()
@@ -46,7 +42,7 @@ namespace HeatWaveShader.Components
             subtextures = null;
         }
 
-        public void Play(PlayerAnimations animation)
+        public void Play(Anims animation)
         {
             var currentAnimation = sprite.currentAnimation;
             if (currentAnimation != animation)

@@ -8,35 +8,35 @@ using Microsoft.Xna.Framework;
 using Nez.Sprites;
 using Nez.Textures;
 using HeatWaveShader.Util;
+using HeatWaveShader.Components;
 
 namespace HeatWaveShader.Entities
 {
-    public class Explosive : Entity
+    public class Explosive
     {
-        Subtexture explosionSubtexture;
-        public Explosive(Subtexture explosionSubtexture)
-        {
-            this.explosionSubtexture = explosionSubtexture;
-        }
-        public override void onRemovedFromScene()
-        {
-            base.onRemovedFromScene();
-            //spawn explosion
-            CreateExplosion(this.scene, explosionSubtexture, position);
 
-        }
-
-        public static Entity CreateExplosion(Scene scene, Subtexture subtexture, Vector2 position, float lifespan = 0.3f, float scalar = 6f)
+        public static Entity CreateExplosion(Scene scene, Vector2 position, float lifespan = 0.3f, float scalar = 2f)
         {
             var e = scene.createEntity("explosion");
             e.position = position;
 
-
-            var s = e.addComponent(new Sprite(subtexture));
+            var testScene = ((TestScene)scene);
+            testScene.PlayPostProcessor(position);
+            var s = new Sprite<Anims>();
             s.renderLayer = -10;
-            Core.schedule(lifespan / 2f, (timer) => e.removeComponent(s));
+            var anim = new AnimationManager(s, testScene.tileSubtextures.ToList());
+            anim.Play(Anims.Explosion);
+            // prob a memory leak but whatev its a demo
+            s.onAnimationCompletedEvent += (playerAnim) =>
+            {
+                if (playerAnim == Anims.Explosion)
+                {
+                    e.removeComponent(s);
 
-            e.tween("scale", new Vector2(scalar), lifespan).setEaseType(Nez.Tweens.EaseType.ExpoOut).start();
+                }
+            };
+            e.addComponent(s);
+            e.addComponent(anim);          
 
             e.addComponent(new DestroyOnTimer(lifespan));
 

@@ -5,6 +5,7 @@ using Nez;
 using Nez.Sprites;
 using Nez.Textures;
 using Nez.Tiled;
+using HeatWaveShader.Effects;
 
 namespace HeatWaveShader
 {
@@ -12,6 +13,8 @@ namespace HeatWaveShader
     {
         Texture2D tiles;
         public Subtexture[] tileSubtextures;
+
+        PixelHeatDistortionPointPostProcessor postProcessor;
 
         public override void initialize()
         {
@@ -28,13 +31,29 @@ namespace HeatWaveShader
             var tiledEntity = this.createEntity("debugMap");
             var tileMapComponent = tiledEntity.addComponent(new TiledMapComponent(tiledMap, "collision"));
             tileMapComponent.setLayersToRender("collision");
-            tileMapComponent.renderLayer = 0;
-            tileMapComponent.physicsLayer = Constants.PhysicsLayers.tiles;
-            var collisionLayer = tileMapComponent.collisionLayer;
+            
 
-            var spawn = tiledMap.getObjectGroup("spawn").objects[0]; // hard assuming only one spawn point
-            addEntity(new Player(new Vector2(spawn.x, spawn.y), tileSubtextures, collisionLayer));
+            var effect = content.Load<Effect>("effects/PixelHeatDistortionPoint");
+            postProcessor = new PixelHeatDistortionPointPostProcessor(0, effect);
+            addPostProcessor(postProcessor);
 
+        }
+
+        public override void update()
+        {
+            base.update();
+            postProcessor.update();
+            if (Nez.Input.leftMouseButtonPressed)
+            {
+                Explosive.CreateExplosion(this, Nez.Input.mousePosition);
+            }
+        }
+
+        public void PlayPostProcessor(Vector2 pos)
+        {
+            pos.X = pos.X / (NezGame.TilesWide * NezGame.TileSize);
+            pos.Y = pos.Y / (NezGame.TilesHigh * NezGame.TileSize);
+            postProcessor.play(pos, 750f);
         }
     }
 }
