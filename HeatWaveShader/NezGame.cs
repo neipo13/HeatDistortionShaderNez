@@ -17,7 +17,7 @@ namespace HeatWaveShader
         public int designWidth => TilesWide * TileSize;
         public int designHeight => TilesHigh * TileSize;
 
-        public NezGame() : base(256 * 4, 144 * 4, windowTitle: "Square Room Project")
+        public NezGame() : base(256 * 4, 144 * 4, windowTitle: "Heat Wave Shader")
         {
             Scene.setDefaultDesignResolution(designWidth, designHeight, Scene.SceneResolutionPolicy.BestFit, 0, 0);
             Window.AllowUserResizing = true;

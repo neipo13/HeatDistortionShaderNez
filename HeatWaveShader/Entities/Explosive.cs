@@ -14,7 +14,6 @@ namespace HeatWaveShader.Entities
 {
     public class Explosive
     {
-
         public static Entity CreateExplosion(Scene scene, Vector2 position, float lifespan = 0.3f, float scalar = 2f)
         {
             var e = scene.createEntity("explosion");
